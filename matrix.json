@@ -1,0 +1,26 @@
+[
+  {
+    "id": "C001",
+    "model": "2024 Honda CR-V EX-L",
+    "status": "Available",
+    "location": "Lot A"
+  },
+  {
+    "id": "C002",
+    "model": "2024 Toyota RAV4 XLE",
+    "status": "Reserved",
+    "location": "Lot B"
+  },
+  {
+    "id": "C003",
+    "model": "2024 Ford F-150 Lariat",
+    "status": "Sold",
+    "location": "Dealership"
+  },
+  {
+    "id": "C004",
+    "model": "2024 Mazda CX-5 Carbon",
+    "status": "Available",
+    "location": "Lot C"
+  }
+]

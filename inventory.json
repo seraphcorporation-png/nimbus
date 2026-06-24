@@ -1,0 +1,38 @@
+[
+  {
+    "year": 2024,
+    "make": "Toyota",
+    "model": "RAV4 XLE",
+    "trim": "XLE",
+    "color": "Blue",
+    "image_url": "/images/rav4.png",
+    "dealership_name": "Serap Motors",
+    "dealership_address": "123 Main St, Anytown, CA",
+    "zip_code": "90210",
+    "monthly_estimate": 430
+  },
+  {
+    "year": 2024,
+    "make": "Honda",
+    "model": "CR-V EX-L",
+    "trim": "EX-L",
+    "color": "Silver",
+    "image_url": "/images/crv.png",
+    "dealership_name": "Serap Motors",
+    "dealership_address": "123 Main St, Anytown, CA",
+    "zip_code": "90210",
+    "monthly_estimate": 440
+  },
+  {
+    "year": 2024,
+    "make": "Ford",
+    "model": "F-150 Lariat",
+    "trim": "Lariat",
+    "color": "Black",
+    "image_url": "/images/f150.png",
+    "dealership_name": "Serap Motors",
+    "dealership_address": "123 Main St, Anytown, CA",
+    "zip_code": "90210",
+    "monthly_estimate": 480
+  }
+]

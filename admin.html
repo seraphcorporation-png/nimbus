@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full antialiased">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | CarNimbus</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['Outfit', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #0A0A0A; color: #f1f5f9; }
+  </style>
+</head>
+<body class="min-h-full flex flex-col bg-[#0A0A0A] text-slate-100 font-sans">
+  <main class="min-h-screen bg-[#0A0A0A] text-slate-100 font-sans p-6 lg:p-12">
+    <header class="flex justify-between items-center mb-12">
+      <div class="flex items-center gap-4">
+        <img src="public/logo.png" alt="CarNimbus Logo" class="w-12 h-12 object-contain" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTAiLz48L3N2Zz4='">
+        <div>
+          <h1 class="text-3xl font-mono font-bold tracking-tighter bg-gradient-to-r from-indigo-400 to-fuchsia-400 bg-clip-text text-transparent">
+            INTERNAL ADMIN
+          </h1>
+          <p class="text-xs text-slate-400 mt-1 uppercase tracking-widest font-mono">CarNimbus Platform Overview</p>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-mono text-slate-200">Live Car Matrix</h2>
+        <button id="resetBtn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md font-mono text-sm">Reset Matrix</button>
+      </div>
+      <div id="car-matrix" class="overflow-x-auto mb-12"></div>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-[#111111]/80 border border-slate-800 rounded-2xl p-6">
+        <h3 class="text-xs font-mono text-slate-400 mb-2 uppercase tracking-widest">Total Matches</h3>
+        <p class="text-3xl font-mono text-white">1,402</p>
+      </div>
+      <div class="bg-[#111111]/80 border border-slate-800 rounded-2xl p-6">
+        <h3 class="text-xs font-mono text-slate-400 mb-2 uppercase tracking-widest">Active Dealers</h3>
+        <p class="text-3xl font-mono text-indigo-400">5</p>
+      </div>
+      <div class="bg-[#111111]/80 border border-slate-800 rounded-2xl p-6">
+        <h3 class="text-xs font-mono text-slate-400 mb-2 uppercase tracking-widest">Platform Revenue</h3>
+        <p class="text-3xl font-mono text-emerald-400">$24.5k</p>
+      </div>
+      <div class="bg-[#111111]/80 border border-slate-800 rounded-2xl p-6">
+        <h3 class="text-xs font-mono text-slate-400 mb-2 uppercase tracking-widest">System Status</h3>
+        <p class="text-xl font-mono text-cyan-400 mt-2">OPTIMAL</p>
+      </div>
+    </div>
+
+    <div class="mt-12 bg-[#111111]/80 border border-slate-800 rounded-2xl p-8 text-center py-24">
+      <h2 class="text-xl font-mono text-slate-300 mb-4">Admin Features Locked</h2>
+      <p class="text-slate-500 max-w-md mx-auto">
+        You are viewing the platform in demonstration mode. Connect to the production matrix to unlock fleet management and billing.
+      </p>
+    </div>
+  </main>
+
+  <script>
+    async function loadCarMatrix() {
+      try {
+        const resp = await fetch('http://localhost:3000/matrix');
+        const cars = await resp.json();
+        const container = document.getElementById('car-matrix');
+        if (!cars.length) {
+          container.innerHTML = '<p class="text-slate-400">No car data available.</p>';
+          return;
+        }
+        let html = '<table class="min-w-full table-auto bg-[#111111]/80 border border-slate-800 rounded-lg overflow-hidden"><thead class="bg-[#222222]/50"><tr>' +
+          '<th class="px-4 py-2 text-left text-xs font-mono text-slate-400 uppercase">ID</th>' +
+          '<th class="px-4 py-2 text-left text-xs font-mono text-slate-400 uppercase">Model</th>' +
+          '<th class="px-4 py-2 text-left text-xs font-mono text-slate-400 uppercase">Status</th>' +
+          '<th class="px-4 py-2 text-left text-xs font-mono text-slate-400 uppercase">Location</th>' +
+          '</tr></thead><tbody>';
+        cars.forEach(car => {
+          html += `<tr class="border-t border-slate-700">
+            <td class="px-4 py-2 text-sm font-mono text-slate-200">${car.id}</td>
+            <td class="px-4 py-2 text-sm font-mono text-slate-200">${car.model}</td>
+            <td class="px-4 py-2 text-sm font-mono ${car.status === 'Available' ? 'text-emerald-400' : 'text-rose-400'}">${car.status}</td>
+            <td class="px-4 py-2 text-sm font-mono text-slate-200">${car.location}</td>
+          </tr>`;
+        });
+        html += '</tbody></table>';
+        container.innerHTML = html;
+      } catch (e) {
+        console.error('Failed to load car matrix', e);
+      }
+    }
+    document.getElementById('resetBtn').addEventListener('click', loadCarMatrix);
+    // Initial load and periodic refresh every 10 seconds
+    loadCarMatrix();
+    setInterval(loadCarMatrix, 10000);
+  </script>
+</body>
+</html>
